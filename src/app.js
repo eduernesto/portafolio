@@ -262,22 +262,6 @@ function drawHero(data) {
     hctx.stroke();
   }
 
-  // Mini building silhouette in hero
-  const bx = w * 0.72, by = h * 0.78;
-  const bw = Math.min(300, w * 0.35);
-  const floors2 = [0.4,0.5,0.6,0.7,0.8,0.9,1.0];
-  let cy2 = by;
-  floors2.forEach((fw, i) => {
-    const fh = 16 + (i===6?6:0);
-    const pulseIdx = Math.floor((i / floors2.length) * (data.length * 0.5));
-    const p = (data[pulseIdx] || 0) / 255;
-    const fx = bx - (bw * fw / 2);
-    const col = i===2 ? `rgba(255,45,85,${0.6+p*0.4})` : i===3 ? `rgba(0,212,255,${0.3+p*0.3})` : `rgba(240,240,240,${0.08+p*0.12})`;
-    hctx.fillStyle = col;
-    hctx.fillRect(fx, cy2 - fh, bw * fw, fh - 1);
-    cy2 -= fh;
-  });
-
   document.getElementById('hFreq').textContent = isAudioReady ? Math.round(440 + globalAmp * 300) + 'hz' : '—';
   document.getElementById('hBpm').textContent = isAudioReady ? calcBPM() : '—';
 }
