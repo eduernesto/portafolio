@@ -84,6 +84,8 @@ const volBtn = document.getElementById('volBtn');
 const volSlider = document.getElementById('volSlider');
 const volRange = document.getElementById('volRange');
 let volOpen = false;
+audioPlayer.volume = 0.3;
+volBtn.textContent = '🔉';
 
 volBtn.addEventListener('click', (e) => {
   e.stopPropagation();
@@ -654,6 +656,15 @@ function updateUI(data) {
       if (beatHistory.length > 8) beatHistory.shift();
     }
   }
+
+  // Project cards vibration
+  const projCards = document.querySelectorAll('.proj-card');
+  const shakeIntensity = globalAmp * 1.5;
+  projCards.forEach(card => {
+    const sx = (Math.random() - 0.5) * shakeIntensity;
+    const sy = (Math.random() - 0.5) * shakeIntensity;
+    card.style.transform = `translate(${sx}px, ${sy}px)`;
+  });
 
   // Freq bars
   const step = Math.floor(data.length / NUM_BARS);

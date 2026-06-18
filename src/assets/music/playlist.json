@@ -1,15 +1,10 @@
 [
-  {
-    "file": "Two Princes.mp3",
-    "cover": "twoprincess.jpg",
-    "title": "Two Princes"
- 
-  },
-
-  {
-    "file": "volero.mp3",
-    "cover": "volero.jpg",
-    "title": "Volero"
- 
-  }
+  { "file": "Alberto Balsalm.mp3", "cover": "Alberto Balsalm.jpeg", "name": "Alberto Balsalm" },
+  { "file": "disorder.mp3", "cover": "disorder.jpg", "name": "Disorder" },
+  { "file": "Gavilán o Paloma.mp3", "cover": "gavilan o paloma.jpeg", "name": "Gavilán o Paloma" },
+  { "file": "pose.mp3", "cover": "pose.jpeg", "name": "Pose" },
+  { "file": "primavera 0.mp3", "cover": "primavera 0.jpg", "name": "Primavera 0" },
+  { "file": "Tus Ojos (Alternate Take).mp3", "cover": "tusojos.jpg", "name": "Tus Ojos" },
+  { "file": "Two Princes.mp3", "cover": "twoprincess.jpg", "name": "Two Princes" },
+  { "file": "Volero.mp3", "cover": "volero.jpg", "name": "Volero" }
 ]
