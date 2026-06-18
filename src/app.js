@@ -6,7 +6,7 @@ let simFrame = 0;
 let simBeat = 0;
 let simBpm = 120;
 let beatHistory = [];
-let layerVisible = [true,true,true,true,true,true,true];
+let layerVisible = [true,true,true,true,true,true,true,true,true];
 let globalAmp = 0;
 let globalBass = 0;
 
@@ -272,23 +272,97 @@ const bctx = buildingCanvas.getContext('2d');
 
 function resizeBuilding() {
   buildingCanvas.width = buildingCanvas.offsetWidth;
-  buildingCanvas.height = buildingCanvas.offsetHeight || 600;
+  buildingCanvas.height = buildingCanvas.offsetHeight || 1200;
 }
 resizeBuilding();
 
 const FLOORS = [
-  { name:'PENTHOUSE',   widthRatio:0.38, h:42, col:'#f0f0f0', tc:'#080808', wins:6,  freq:0.95 },
-  { name:'LAYER_07',    widthRatio:0.44, h:48, col:'#1a1a1a', tc:'#ff2d55', wins:7,  freq:0.82 },
-  { name:'FREQ_BAND',   widthRatio:0.48, h:38, col:'#ff2d55', tc:'#080808', wins:8,  freq:0.65 },
-  { name:'MID_RANGE',   widthRatio:0.52, h:52, col:'#111',    tc:'#00d4ff', wins:9,  freq:0.48 },
-  { name:'BASS_CORE',   widthRatio:0.56, h:44, col:'#1c1c1c', tc:'#f0f0f0', wins:10, freq:0.30 },
-  { name:'CODE_LAYER',  widthRatio:0.60, h:56, col:'#080808', tc:'#ff2d55', wins:10, freq:0.15 },
-  { name:'FOUNDATION',  widthRatio:0.64, h:38, col:'#222',    tc:'#888',    wins:11, freq:0.05 },
+  {
+    name: 'FRONTEND',
+    widthRatio: 0.38, h: 180,
+    col: '#1a1a1a', tc: '#ff2d55', accent: '#ff2d55',
+    isData: true,
+    skills: [
+      ['React','Intermedio'],['TypeScript','Avanzado'],['JavaScript','Avanzado'],
+      ['Angular','Intermedio'],['Tailwind','Intermedio'],['CSS3','Avanzado'],['HTML5','Avanzado'],
+    ],
+  },
+  {
+    name: 'FOUNDATION',
+    widthRatio: 0.64, h: 40,
+    col: '#222', tc: '#f0f0f0', accent: '#f0f0f0',
+    isData: false, skills: [],
+    freq: 0.05, wins: 11,
+  },
+  {
+    name: 'BACKEND',
+    widthRatio: 0.48, h: 210,
+    col: '#111', tc: '#00d4ff', accent: '#00d4ff',
+    isData: true,
+    skills: [
+      ['Java','Avanzado'],['Spring Boot','Intermedio'],['C#','Avanzado'],['.NET','Intermedio'],
+      ['Node.js','Avanzado'],['Python','Avanzado'],['C++','Intermedio'],
+      ['REST APIs','Experto'],['JWT / Auth','Intermedio'],
+    ],
+  },
+  {
+    name: 'BASS_CORE',
+    widthRatio: 0.68, h: 40,
+    col: '#222', tc: '#888', accent: '#888',
+    isData: false, skills: [],
+    freq: 0.30, wins: 12,
+  },
+  {
+    name: 'DATABASES',
+    widthRatio: 0.54, h: 160,
+    col: '#1c1c1c', tc: '#f0f0f0', accent: '#f0f0f0',
+    isData: true,
+    skills: [
+      ['MySQL','Avanzado'],['SQL Server','Intermedio'],['PostgreSQL','Intermedio'],
+      ['MongoDB','Basico'],['SQLite','Intermedio'],['Firebase','Basico'],
+    ],
+  },
+  {
+    name: 'MID_RANGE',
+    widthRatio: 0.72, h: 40,
+    col: '#222', tc: '#ff2d55', accent: '#ff2d55',
+    isData: false, skills: [],
+    freq: 0.48, wins: 13,
+  },
+  {
+    name: 'AUTOMATION',
+    widthRatio: 0.58, h: 110,
+    col: '#080808', tc: '#ff2d55', accent: '#ff2d55',
+    isData: true,
+    skills: [
+      ['N8N','Avanzado'],['Webhooks','Avanzado'],
+    ],
+  },
+  {
+    name: 'TREBLE',
+    widthRatio: 0.76, h: 40,
+    col: '#222', tc: '#00d4ff', accent: '#00d4ff',
+    isData: false, skills: [],
+    freq: 0.85, wins: 14,
+  },
+  {
+    name: 'DEVOPS',
+    widthRatio: 0.62, h: 160,
+    col: '#1a1a1a', tc: '#00d4ff', accent: '#00d4ff',
+    isData: true,
+    skills: [
+      ['Git','Experto'],['GitHub','Experto'],['CI/CD','Basico'],
+      ['Docker','Basico'],['Postman','Avanzado'],['Linux','Intermedio'],
+    ],
+  },
 ];
 
-const snippets2 = ['beat()','freq++','render()','0xFF','amp*2','draw()','sync()','bass()','{wave}','loop()'];
-let snipIdx2 = 0;
-let snipTimer = 0;
+const levelColors = {
+  'Basico':    { c: '#666',   dots: 1 },
+  'Intermedio':{ c: '#ffd700', dots: 2 },
+  'Avanzado':  { c: '#ff2d55', dots: 3 },
+  'Experto':   { c: '#00d4ff', dots: 4 },
+};
 
 function drawBuildingMain(data) {
   const w = buildingCanvas.width, h = buildingCanvas.height;
@@ -332,84 +406,118 @@ function drawBuildingMain(data) {
 
   // Floors
   let cursor = groundY;
-  snipTimer++;
-  if (snipTimer % 70 === 0) snipIdx2++;
 
   FLOORS.forEach((fl, i) => {
     if (!layerVisible[i]) { cursor -= fl.h + 2; return; }
 
-    const freqIdx = Math.floor(fl.freq * (data.length - 1));
-    const rawPulse = (data[freqIdx] || 0) / 255;
+    const pulseIdx = Math.floor((i / FLOORS.length) * (data.length * 0.5));
+    const rawPulse = (data[pulseIdx] || 0) / 255;
     const pulse = rawPulse * 0.8 + globalAmp * 0.2;
 
-    const offsetY = Math.sin(simFrame * 0.03 + i * 0.7) * 2 * pulse;
+    const offsetY = fl.isData ? Math.sin(simFrame * 0.03 + i * 0.7) * 2 * pulse : 0;
     const flW = w * fl.widthRatio;
     const flX = cx - flW / 2;
     const flY = cursor - fl.h + offsetY;
 
-    // Shadow layer (depth effect)
-    bctx.fillStyle = 'rgba(0,0,0,0.4)';
-    bctx.fillRect(flX + 4, flY + 4, flW, fl.h);
+    if (fl.isData) {
+      // ─── Data floor ────────────────────────────────────────────────
+      bctx.fillStyle = 'rgba(0,0,0,0.4)';
+      bctx.fillRect(flX + 4, flY + 4, flW, fl.h);
 
-    // Main floor
-    bctx.fillStyle = fl.col;
-    bctx.fillRect(flX, flY, flW, fl.h);
+      bctx.fillStyle = fl.col;
+      bctx.fillRect(flX, flY, flW, fl.h);
 
-    // Horizontal accent lines (texture)
-    if (fl.h > 40) {
-      bctx.strokeStyle = 'rgba(255,255,255,0.04)';
+      // Texture lines
+      bctx.strokeStyle = 'rgba(255,255,255,0.03)';
       bctx.lineWidth = 0.5;
-      for (let ly = flY + 10; ly < flY + fl.h - 6; ly += 8) {
+      for (let ly = flY + 14; ly < flY + fl.h - 8; ly += 10) {
         bctx.beginPath(); bctx.moveTo(flX, ly); bctx.lineTo(flX+flW, ly); bctx.stroke();
       }
-    }
 
-    // Border
-    bctx.strokeStyle = i===2 ? '#ff2d55' : i===3 ? '#00d4ff' : '#333';
-    bctx.lineWidth = i===2 ? 2 : 0.5;
-    bctx.strokeRect(flX, flY, flW, fl.h);
+      // Border
+      bctx.strokeStyle = fl.accent;
+      bctx.lineWidth = 1;
+      bctx.strokeRect(flX, flY, flW, fl.h);
 
-    // Top accent bar
-    const accentCol = i===2 ? '#ff2d55' : i===3 ? '#00d4ff' : i===0 ? '#f0f0f0' : '#333';
-    bctx.fillStyle = accentCol;
-    bctx.fillRect(flX, flY, flW, 3);
+      // Top accent bar (glows with music)
+      bctx.fillStyle = `rgba(${fl.accent === '#ff2d55' ? '255,45,85' : fl.accent === '#00d4ff' ? '0,212,255' : '240,240,240'},${0.5 + pulse * 0.5})`;
+      bctx.fillRect(flX, flY, flW, 3);
 
-    // Windows
-    const winW = 12, winH = fl.h * 0.42;
-    const winY = flY + fl.h * 0.28;
-    const gap = (flW - fl.wins * winW) / (fl.wins + 1);
-    for (let j = 0; j < fl.wins; j++) {
-      const wx = flX + gap + j * (winW + gap);
-      const brightness = 0.15 + pulse * 0.7 + (j%3===0 ? globalAmp * 0.3 : 0);
-      let wc;
-      if (i===2) wc = `rgba(255,45,85,${brightness})`;
-      else if (i===3) wc = `rgba(0,212,255,${brightness * 0.8})`;
-      else if (i===0) wc = `rgba(255,255,255,${brightness * 0.7})`;
-      else wc = `rgba(240,240,240,${brightness * 0.35})`;
-      bctx.fillStyle = wc;
-      bctx.fillRect(wx, winY, winW - 2, winH);
-      bctx.strokeStyle = 'rgba(255,255,255,0.06)';
+      // Floor name - top left
+      bctx.font = '700 14px Space Mono, monospace';
+      bctx.fillStyle = fl.accent;
+      bctx.textAlign = 'left';
+      bctx.fillText(fl.name, flX + 16, flY + 30);
+
+      // Skills — two-column layout (larger fonts)
+      const pad = 16;
+      const colW = (flW - pad * 2) / 2;
+      const rowH = 30;
+      const colStart = flX + pad;
+      const rowStart = flY + 50;
+
+      fl.skills.forEach((skill, si) => {
+        const col = si % 2;
+        const row = Math.floor(si / 2);
+        const sx = colStart + col * colW;
+        const sy = rowStart + row * rowH;
+
+        const lvl = levelColors[skill[1]] || { c: '#666', dots: 1 };
+        const dots = '●'.repeat(lvl.dots) + '○'.repeat(4 - lvl.dots);
+
+        bctx.font = '13px IBM Plex Mono, monospace';
+        bctx.fillStyle = '#f0f0f0';
+        bctx.fillText(skill[0], sx, sy);
+
+        bctx.font = '11px monospace';
+        bctx.fillStyle = lvl.c;
+        bctx.fillText(dots, sx + colW * 0.6, sy);
+      });
+
+      // Pulse energy bar (right side)
+      const barH = Math.round(pulse * (fl.h - 20));
+      bctx.fillStyle = `rgba(${fl.accent === '#ff2d55' ? '255,45,85' : fl.accent === '#00d4ff' ? '0,212,255' : '240,240,240'},0.3)`;
+      bctx.fillRect(flX + flW - 6, flY + fl.h - 10 - barH, 4, barH);
+
+    } else {
+      // ─── Separator floor (reactive to frequency band) ─────────────
+      const freqIdx = Math.floor(fl.freq * (data.length - 1));
+      const rawPulse = (data[freqIdx] || 0) / 255;
+      const sepPulse = rawPulse * 0.7 + globalAmp * 0.3;
+
+      bctx.fillStyle = 'rgba(0,0,0,0.4)';
+      bctx.fillRect(flX + 3, flY + 3, flW, fl.h);
+
+      bctx.fillStyle = fl.col;
+      bctx.fillRect(flX, flY, flW, fl.h);
+
+      // Top accent bar that glows with its frequency band
+      bctx.fillStyle = `rgba(${fl.accent === '#f0f0f0' ? '240,240,240' : fl.accent === '#888' ? '136,136,136' : fl.accent === '#ff2d55' ? '255,45,85' : '0,212,255'},${0.3 + sepPulse * 0.7})`;
+      bctx.fillRect(flX, flY, flW, 3);
+
+      // Border
+      bctx.strokeStyle = fl.accent;
       bctx.lineWidth = 0.5;
-      bctx.strokeRect(wx, winY, winW - 2, winH);
+      bctx.strokeRect(flX, flY, flW, fl.h);
+
+      // Reactive windows
+      const winW = 10, winH = fl.h * 0.5;
+      const winY = flY + fl.h * 0.25;
+      const gap = (flW - fl.wins * winW) / (fl.wins + 1);
+      for (let j = 0; j < fl.wins; j++) {
+        const wx = flX + gap + j * (winW + gap);
+        const brightness = 0.1 + sepPulse * 0.8;
+        const wc = `rgba(${fl.accent === '#f0f0f0' ? '240,240,240' : fl.accent === '#888' ? '136,136,136' : fl.accent === '#ff2d55' ? '255,45,85' : '0,212,255'},${brightness})`;
+        bctx.fillStyle = wc;
+        bctx.fillRect(wx, winY, winW - 2, winH);
+      }
+
+      // Center label
+      bctx.fillStyle = fl.tc;
+      bctx.font = '9px Space Mono, monospace';
+      bctx.textAlign = 'center';
+      bctx.fillText(fl.name, cx, flY + fl.h - 12);
     }
-
-    // Code snippet in CODE_LAYER
-    if (i===5 && pulse > 0.1) {
-      bctx.font = '8px IBM Plex Mono, monospace';
-      bctx.fillStyle = `rgba(255,45,85,${0.3 + pulse * 0.5})`;
-      bctx.fillText(snippets2[snipIdx2 % snippets2.length], flX + 10, flY + fl.h/2 + 3);
-    }
-
-    // Floor label
-    bctx.font = '700 9px Space Mono, monospace';
-    bctx.fillStyle = fl.tc;
-    bctx.textAlign = 'left';
-    bctx.fillText(fl.name, flX + 10, flY + fl.h/2 + 3);
-
-    // Pulse indicator right side
-    const indW = Math.round(pulse * 40);
-    bctx.fillStyle = i===2 ? 'rgba(255,45,85,0.6)' : 'rgba(240,240,240,0.2)';
-    bctx.fillRect(flX + flW - 50, flY + fl.h/2 - 4, indW, 8);
 
     cursor = flY;
   });
@@ -539,6 +647,83 @@ function updateUI(data) {
   });
 }
 
+// ─── CODE RAIN ────────────────────────────────────────────────────────
+const rainCanvas = document.getElementById('coderain-canvas');
+const rctx = rainCanvas.getContext('2d');
+const RAIN_COLS = 80;
+let rainDrops = [];
+let rainChars = [];
+
+function initRain() {
+  rainDrops = [];
+  rainChars = [];
+  for (let i = 0; i < RAIN_COLS; i++) {
+    rainDrops[i] = Math.floor(Math.random() * -100);
+    rainChars[i] = String.fromCharCode(0x30A0 + Math.random() * 96);
+  }
+}
+
+function resizeRain() {
+  rainCanvas.width = rainCanvas.offsetWidth;
+  rainCanvas.height = rainCanvas.offsetHeight;
+  initRain();
+}
+resizeRain();
+window.addEventListener('resize', resizeRain);
+
+function drawCodeRain(data) {
+  const w = rainCanvas.width, h = rainCanvas.height;
+  rctx.fillStyle = 'rgba(8,8,8,0.12)';
+  rctx.fillRect(0, 0, w, h);
+
+  const colW = w / RAIN_COLS;
+  const amp = globalAmp;
+  const bass = globalBass / 255;
+
+  // Beat flash
+  const flash = bass > 0.5 ? amp * 0.3 : 0;
+
+  rctx.font = '14px IBM Plex Mono, monospace';
+
+  for (let i = 0; i < RAIN_COLS; i++) {
+    const x = i * colW;
+
+    // Speed influenced by audio amplitude
+    const speed = 0.5 + amp * 1.5 + (i % 5 === 0 ? bass * 2 : 0);
+    rainDrops[i] += speed;
+
+    const y = rainDrops[i] * 14;
+
+    // Reset when out of bounds
+    if (y > h + 50 && Math.random() > 0.975) {
+      rainDrops[i] = Math.random() * -50;
+      rainChars[i] = String.fromCharCode(0x30A0 + Math.floor(Math.random() * 96));
+    }
+
+    if (y < 0 || y > h) continue;
+
+    // Alpha based on audio and position
+    const distFromPeak = Math.abs(i - RAIN_COLS * (data[Math.floor(i * data.length / RAIN_COLS)] || 0) / 255);
+    const alpha = Math.min(0.9, 0.15 + amp * 0.5 + Math.random() * 0.2 + flash);
+    const tailAlpha = Math.max(0.05, alpha * (1 - y / h));
+
+    // Lead character (brighter)
+    rctx.fillStyle = `rgba(0,212,255,${alpha})`;
+    rctx.fillText(rainChars[i], x, y);
+
+    // Tail (dimmer, greenish)
+    if (y > 14) {
+      rctx.fillStyle = `rgba(168,255,120,${tailAlpha * 0.5})`;
+      rctx.fillText(rainChars[i], x, y - 14);
+    }
+
+    // Random character change on beat
+    if (bass > 0.6 && Math.random() > 0.7) {
+      rainChars[i] = String.fromCharCode(0x30A0 + Math.floor(Math.random() * 96));
+    }
+  }
+}
+
 // ─── MAIN LOOP ───────────────────────────────────────────────────────
 function mainLoop() {
   const data = getAudioData();
@@ -546,6 +731,7 @@ function mainLoop() {
   drawHero(data);
   drawBuildingMain(data);
   drawWaveform(data);
+  drawCodeRain(data);
   animFrame = requestAnimationFrame(mainLoop);
 }
 

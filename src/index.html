@@ -14,10 +14,11 @@
   <div class="nav-logo">E.A.</div>
   <ul class="nav-links">
     <li><a href="#hero">ABOUT ME</a></li>
-    <li><a href="#audio-section">AUDIO</a></li>
     <li><a href="#building-section">STACK</a></li>
-    <li><a href="#code-section">SISTEMA</a></li>
+    <li><a href="#code-section">EXPERIENCIA</a></li>
+    <li><a href="#projects">PROYECTOS</a></li>
     <li><a href="#manifesto">MANIFIESTO</a></li>
+    <li><a href="#contacto">CONTACTO</a></li>
   </ul>
   <div class="music-player">
     <div class="player-cover" id="playerCover"></div>
@@ -117,14 +118,11 @@
     <p style="font-size:10px;letter-spacing:2px;color:var(--gray4);margin-bottom:24px;line-height:1.8;">Tecnologías que manejo<br>Frontend moderno, backends robustos, servidores y automatización.</p>
   <canvas id="building-canvas"></canvas>
   <div class="building-controls">
-    <span style="font-size:9px;letter-spacing:2px;color:var(--gray4);">CAPAS VISIBLES:</span>
-    <button class="layer-toggle on red-t" data-layer="0" onclick="toggleLayer(this,0)">PENTHOUSE</button>
-    <button class="layer-toggle on" data-layer="1" onclick="toggleLayer(this,1)">FREQ_07</button>
-    <button class="layer-toggle on red-t" data-layer="2" onclick="toggleLayer(this,2)">FREQ_BAND</button>
-    <button class="layer-toggle on cyan-t" data-layer="3" onclick="toggleLayer(this,3)">MID_RANGE</button>
-    <button class="layer-toggle on" data-layer="4" onclick="toggleLayer(this,4)">BASS_CORE</button>
-    <button class="layer-toggle on" data-layer="5" onclick="toggleLayer(this,5)">CODE_LAYER</button>
-    <button class="layer-toggle on" data-layer="6" onclick="toggleLayer(this,6)">FOUNDATION</button>
+    <span style="font-size:9px;letter-spacing:2px;color:var(--gray4);">NIVEL:</span>
+    <span style="font-size:8px;letter-spacing:1px;color:var(--gray4);">● Básico</span>
+    <span style="font-size:8px;letter-spacing:1px;color:#ffd700;">●● Intermedio</span>
+    <span style="font-size:8px;letter-spacing:1px;color:var(--red);">●●● Avanzado</span>
+    <span style="font-size:8px;letter-spacing:1px;color:var(--cyan);">●●●● Experto</span>
   </div>
 </section>
 
@@ -138,89 +136,103 @@
   </div>
 </section>
 
-<!-- CODE SECTION -->
+<!-- EXPERIENCE -->
 <section id="code-section">
-  <div class="section-label">// documentación técnica</div>
-  <h2 class="section-title">SISTEMA<br>ACTIVO</h2>
-  <div class="code-grid">
-    <div class="code-card red">
-      <div class="card-num">MODULE_01</div>
-      <div class="card-title">AudioContext API</div>
-      <div class="card-code">
-        <span class="kw">const</span> ctx = <span class="kw">new</span><br>
-        &nbsp;AudioContext()<br>
-        <span class="kw">const</span> src = ctx<br>
-        &nbsp;.createMediaStream<br>
-        &nbsp;Source(stream)<br>
-        analyser.fftSize = <span class="num">2048</span>
-      </div>
-      <div class="card-live">Captura el audio del micrófono y lo transforma en datos de frecuencia usando FFT de 2048 puntos.</div>
+  <div class="section-label">// experiencia</div>
+  <h2 class="section-title">TRABAJO<br>RECIENTE</h2>
+  <div class="code-terminal">
+    <div class="terminal-bar">
+      <span class="term-dot" style="background:#ff5f57"></span>
+      <span class="term-dot" style="background:#febc2e"></span>
+      <span class="term-dot" style="background:#28c840"></span>
+      <span class="term-title">experience.js</span>
     </div>
-    <div class="code-card cyan">
-      <div class="card-num">MODULE_02</div>
-      <div class="card-title">Mapeo de Capas</div>
-      <div class="card-code">
-        floors.map((f, i) => {<br>
-        &nbsp;<span class="kw">const</span> band =<br>
-        &nbsp;&nbsp;freqData[i * step]<br>
-        &nbsp;f.pulse = band / <span class="num">255</span><br>
-        &nbsp;<span class="fn">renderFloor</span>(f)<br>
-        })
-      </div>
-      <div class="card-live">Cada piso del edificio recibe datos de una banda de frecuencia específica del espectro.</div>
+    <div class="terminal-body">
+      <span class="cm">// experiencia laboral</span><br><br>
+      <span class="cm">/* Grupo Arqky — Nov 2025 – Presente */</span><br><br>
+      <span class="kw">const</span> fullstack = {<br>
+      &nbsp;&nbsp;empresa: <span class="str">'Grupo Arqky'</span>,<br>
+      &nbsp;&nbsp;rol: <span class="str">'Desarrollador Web Full-Stack & Soporte'</span>,<br>
+      &nbsp;&nbsp;periodo: <span class="str">'Nov 2025 – Presente'</span>,<br>
+      &nbsp;&nbsp;tareas: [<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="str">'Desarrollé y mantuve aplicaciones web Full-Stack'</span>,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="str">  '(HTML, CSS, JavaScript, Python).'</span>,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="str">'Automaticé procesos clave con N8N,'</span>,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="str">'  reduciendo tareas manuales del equipo.'</span>,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="str">'Consulté y validé datos en SQL'</span>,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="str">'  para soporte y resolución en producción.'</span>,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="str">'Participé en pruebas funcionales (QA)'</span>,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="str">'  y coordiné seguimiento de incidencias.'</span>,<br>
+      &nbsp;&nbsp;],<br>
+      };<br><br>
+      <span class="fn">export</span> <span class="kw">default</span> fullstack;<br>
+      <span class="cursor">_</span>
     </div>
-    <div class="code-card white">
-      <div class="card-num">MODULE_03</div>
-      <div class="card-title">Render Loop</div>
-      <div class="card-code">
-        <span class="fn">requestAnimation</span><br>
-        Frame(() => {<br>
-        &nbsp;analyser.getByteFreq<br>
-        &nbsp;uencyData(buf)<br>
-        &nbsp;<span class="fn">drawBuilding</span>(buf)<br>
-        &nbsp;<span class="fn">drawWave</span>(buf)<br>
-        })
+  </div>
+</section>
+
+<!-- CODE RAIN -->
+<section id="coderain-section">
+  <div class="rain-label">// código vivo</div>
+  <canvas id="coderain-canvas"></canvas>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">// proyectos personales</div>
+  <h2 class="section-title">MIS<br>PROYECTOS</h2>
+  <p class="section-body" style="max-width:600px;">Proyectos reales que resuelven problemas reales. De la idea al despliegue, cada línea tiene un propósito.</p>
+  <div class="proj-grid">
+    <div class="proj-card">
+      <div class="proj-cover" style="background:linear-gradient(135deg,#1a1a1a 0%,#ff2d55 100%);">
+        <div class="proj-cover-overlay">
+          <span class="proj-cover-icon">_01</span>
+        </div>
       </div>
-      <div class="card-live">El loop de animación corre a 60fps, actualizando el edificio y la forma de onda en cada frame.</div>
+      <div class="proj-body">
+        <div class="proj-title">NOMBRE DEL PROYECTO</div>
+        <div class="proj-desc">Descripción breve del proyecto. Tecnologías usadas, problema que resuelve y resultado obtenido.</div>
+        <div class="proj-tags">
+          <span class="proj-tag">REACT</span>
+          <span class="proj-tag">NODE</span>
+          <span class="proj-tag">N8N</span>
+        </div>
+        <button class="btn btn-ghost" style="width:100%;">VER PROYECTO →</button>
+      </div>
     </div>
-    <div class="code-card red">
-      <div class="card-num">MODULE_04</div>
-      <div class="card-title">Detector de Beat</div>
-      <div class="card-code">
-        <span class="kw">const</span> bass =<br>
-        &nbsp;avg(buf.slice(<span class="num">0</span>,<span class="num">8</span>))<br>
-        <span class="kw">if</span> (bass > threshold)<br>
-        &nbsp;beatHistory.push(<br>
-        &nbsp;&nbsp;Date.now())<br>
-        bpm = <span class="fn">calcBPM</span>(hist)
+    <div class="proj-card">
+      <div class="proj-cover" style="background:linear-gradient(135deg,#1a1a1a 0%,#00d4ff 100%);">
+        <div class="proj-cover-overlay">
+          <span class="proj-cover-icon">_02</span>
+        </div>
       </div>
-      <div class="card-live">Detecta el ritmo analizando los picos de energía en las frecuencias graves del espectro.</div>
+      <div class="proj-body">
+        <div class="proj-title">NOMBRE DEL PROYECTO</div>
+        <div class="proj-desc">Descripción breve del proyecto. Tecnologías usadas, problema que resuelve y resultado obtenido.</div>
+        <div class="proj-tags">
+          <span class="proj-tag">PYTHON</span>
+          <span class="proj-tag">DOCKER</span>
+          <span class="proj-tag">SQL</span>
+        </div>
+        <button class="btn btn-ghost" style="width:100%;">VER PROYECTO →</button>
+      </div>
     </div>
-    <div class="code-card cyan">
-      <div class="card-num">MODULE_05</div>
-      <div class="card-title">Código Vivo</div>
-      <div class="card-code">
-        <span class="kw">const</span> glitch =<br>
-        &nbsp;amp > <span class="num">0.8</span><br>
-        &nbsp;&nbsp;? <span class="fn">shakeFloor</span>()<br>
-        &nbsp;&nbsp;: <span class="fn">idle</span>()<br>
-        canvas.fillText(<br>
-        &nbsp;snippet, x, y)
+    <div class="proj-card">
+      <div class="proj-cover" style="background:linear-gradient(135deg,#1a1a1a 0%,#a8ff78 100%);">
+        <div class="proj-cover-overlay">
+          <span class="proj-cover-icon">_03</span>
+        </div>
       </div>
-      <div class="card-live">Los snippets de código que aparecen en las ventanas del edificio son generados en tiempo real.</div>
-    </div>
-    <div class="code-card white">
-      <div class="card-num">MODULE_06</div>
-      <div class="card-title">Modo Simulado</div>
-      <div class="card-code">
-        <span class="kw">if</span> (!micActive) {<br>
-        &nbsp;amp = Math.sin(<br>
-        &nbsp;&nbsp;frame * <span class="num">0.04</span>)<br>
-        &nbsp;beat += bpm/<span class="num">60</span>/<span class="num">60</span><br>
-        &nbsp;<span class="fn">simulateFft</span>()<br>
-        }
+      <div class="proj-body">
+        <div class="proj-title">NOMBRE DEL PROYECTO</div>
+        <div class="proj-desc">Descripción breve del proyecto. Tecnologías usadas, problema que resuelve y resultado obtenido.</div>
+        <div class="proj-tags">
+          <span class="proj-tag">ANGULAR</span>
+          <span class="proj-tag">C#</span>
+          <span class="proj-tag">.NET</span>
+        </div>
+        <button class="btn btn-ghost" style="width:100%;">VER PROYECTO →</button>
       </div>
-      <div class="card-live">Sin micrófono, el sistema genera datos sintéticos para mantener el edificio animado.</div>
     </div>
   </div>
 </section>
@@ -233,6 +245,77 @@
     CADA <em>LÍNEA.</em>
   </p>
   <p class="manifesto-sub">// portfolio · 2026 · eduardo alvarez · desarrollo y soluciono</p>
+</section>
+
+<!-- CONTACT -->
+<section id="contacto">
+  <div class="contact-grid">
+    <div class="contact-info">
+      <div class="section-label">// contacto</div>
+      <h2 class="section-title" style="margin-bottom:8px;">¿TIENES UN<br>PROYECTO?</h2>
+
+      <div class="contact-status">
+        <span class="status-dot"></span>
+        <span class="status-text">// estado actual</span>
+      </div>
+      <p class="contact-desc" style="margin-bottom:16px;font-size:10px;">Abierto a proyectos freelance, colaboraciones<br>y oportunidades full-time o part-time.</p>
+
+      <div class="contact-badges">
+        <span class="badge">FREELANCE</span>
+        <span class="badge">FULL-TIME</span>
+        <span class="badge">PART-TIME</span>
+        <span class="badge">REMOTO</span>
+      </div>
+
+      <p class="contact-desc" style="margin-top:24px;margin-bottom:16px;">Prefiero el contacto directo por WhatsApp o el formulario. Respondo en menos de 24h.</p>
+
+      <div class="contact-channels">
+        <a href="#" class="channel" target="_blank">
+          <span class="channel-icon">📱</span>
+          <span class="channel-label">WHATSAPP</span>
+          <span class="channel-arrow">→</span>
+        </a>
+        <a href="#" class="channel" target="_blank">
+          <span class="channel-icon">✉</span>
+          <span class="channel-label">GMAIL</span>
+          <span class="channel-arrow">→</span>
+        </a>
+        <a href="#" class="channel" target="_blank">
+          <span class="channel-icon">⎇</span>
+          <span class="channel-label">GITHUB</span>
+          <span class="channel-arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="contact-form-wrap">
+      <div class="form-header">
+        <span class="term-dot" style="background:#ff5f57"></span>
+        <span class="term-dot" style="background:#febc2e"></span>
+        <span class="term-dot" style="background:#28c840"></span>
+        <span class="term-title" style="margin-left:12px;font-size:10px;color:var(--gray5);">nuevo_mensaje.js</span>
+      </div>
+      <form class="contact-form" onsubmit="event.preventDefault();">
+        <div class="field">
+          <label class="field-label">// nombre *</label>
+          <input class="field-input" type="text" placeholder="Tu nombre" required>
+        </div>
+        <div class="field">
+          <label class="field-label">// email *</label>
+          <input class="field-input" type="email" placeholder="tu@email.com" required>
+        </div>
+        <div class="field">
+          <label class="field-label">// asunto *</label>
+          <input class="field-input" type="text" placeholder="¿De qué se trata?" required>
+        </div>
+        <div class="field">
+          <label class="field-label">// mensaje *</label>
+          <textarea class="field-input field-textarea" rows="4" placeholder="Cuéntame sobre tu proyecto o idea..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">ENVIAR MENSAJE →</button>
+      </form>
+    </div>
+  </div>
 </section>
 
 <!-- FOOTER -->
