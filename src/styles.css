@@ -456,6 +456,38 @@ nav {
   display: block;
 }
 
+/* MOBILE FLOOR VIEWER */
+#mobileFloorViewer { display: none; }
+
+.mf-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 0 12px;
+}
+
+.mf-btn {
+  background: transparent;
+  border: 1px solid var(--gray3);
+  color: var(--white);
+  font-size: 16px;
+  width: 36px; height: 36px;
+  cursor: crosshair;
+  transition: all 0.15s;
+}
+
+.mf-btn:hover { border-color: var(--red); color: var(--red); }
+
+.mf-floor-name {
+  font-family: var(--ibm);
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.mf-skills { display: none; }
+
 .building-controls {
   display: flex;
   gap: 16px;
@@ -990,8 +1022,10 @@ footer {
   .hero-sub { max-width: 100%; }
   .scroll-hint { bottom: 12px; font-size: 7px; letter-spacing: 2px; }
 
-  #building-section { padding: 60px 20px 30px; }
-  #building-canvas { height: 650px; }
+  #building-section { padding: 40px 16px 24px; }
+  #building-canvas { display: none; }
+  #mobileFloorViewer { display: block; }
+  #mf-canvas { width: 100%; display: block; background: #080808; border: 1px solid var(--gray3); }
 
   #audio-section, #waveform-section, #code-section,
   #projects, #manifesto, #contacto { padding: 60px 20px; }
@@ -1033,7 +1067,6 @@ footer {
   .hero-title { font-size: 36px; letter-spacing: -2px; }
   .hero-sub { font-size: 10px; letter-spacing: 1px; }
   .hero-eyebrow { font-size: 7px; letter-spacing: 3px; }
-  #building-canvas { height: 450px; }
   .building-controls { gap: 8px; }
   .building-controls span { font-size: 8px !important; }
   .btn { padding: 10px 14px; font-size: 8px; letter-spacing: 2px; }

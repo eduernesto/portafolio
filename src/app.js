@@ -232,7 +232,18 @@ function resizeHero() {
   heroCanvas.height = heroCanvas.offsetHeight;
 }
 resizeHero();
-window.addEventListener('resize', () => { resizeHero(); resizeBuilding(); resizeWave(); });
+window.addEventListener('resize', () => { resizeHero(); resizeBuilding(); resizeWave(); resizeMF(); });
+
+function resizeMF() {
+  if (!mfCanvas) return;
+  const fl = mfFloors[mfIndex];
+  const skillCount = (fl && fl.isData && fl.skills) ? fl.skills.length : 0;
+  const neededH = 120 + skillCount * 30;
+  mfCanvas.style.height = Math.max(220, Math.min(500, neededH)) + 'px';
+  mfCanvas.width = mfCanvas.offsetWidth;
+  mfCanvas.height = mfCanvas.offsetHeight;
+  drawMobileFloor();
+}
 
 let heroFrame = 0;
 function drawHero(data) {
@@ -581,6 +592,96 @@ function drawBuildingMain(data) {
   }
 }
 
+// ─── MOBILE FLOOR VIEWER ─────────────────────────────────────────────
+const mfCanvas = document.getElementById('mf-canvas');
+const mfCtx = mfCanvas && mfCanvas.getContext('2d');
+const mfFloorName = document.getElementById('mfFloorName');
+const mfSkills = document.getElementById('mfSkills');
+let mfIndex = 0;
+const mfFloors = FLOORS.filter(f => f.isData);
+const levelColorsMF = {
+  'Basico':    { c: '#666',   dots: 1 },
+  'Intermedio':{ c: '#ffd700', dots: 2 },
+  'Avanzado':  { c: '#ff2d55', dots: 3 },
+  'Experto':   { c: '#00d4ff', dots: 4 },
+};
+
+function drawMobileFloor() {
+  if (!mfCtx || window.innerWidth > 768) return;
+  const fl = mfFloors[mfIndex];
+  if (!fl) return;
+  const w = mfCanvas.width, h = mfCanvas.height;
+
+  mfCtx.clearRect(0, 0, w, h);
+  mfCtx.fillStyle = '#080808';
+  mfCtx.fillRect(0, 0, w, h);
+
+  // Grid
+  mfCtx.strokeStyle = 'rgba(30,30,30,0.6)';
+  mfCtx.lineWidth = 0.5;
+  for (let x = 0; x < w; x += 30) { mfCtx.beginPath(); mfCtx.moveTo(x,0); mfCtx.lineTo(x,h); mfCtx.stroke(); }
+  for (let y = 0; y < h; y += 30) { mfCtx.beginPath(); mfCtx.moveTo(0,y); mfCtx.lineTo(w,y); mfCtx.stroke(); }
+
+  const skillCount = (fl.isData && fl.skills) ? fl.skills.length : 0;
+  const contentH = 60 + skillCount * 30;
+  const flH = Math.min(contentH, h - 40);
+  const flW = w * 0.7;
+  const flX = (w - flW) / 2;
+  const flY = (h - flH) / 2;
+
+  const pulse = 0.3 + globalAmp * 0.7;
+  mfCtx.fillStyle = fl.col || '#111';
+  mfCtx.fillRect(flX, flY, flW, flH);
+  mfCtx.fillStyle = `rgba(${fl.accent === '#ff2d55' ? '255,45,85' : fl.accent === '#00d4ff' ? '0,212,255' : '240,240,240'},${0.4 + pulse * 0.6})`;
+  mfCtx.fillRect(flX, flY, flW, 4);
+  mfCtx.strokeStyle = fl.accent;
+  mfCtx.lineWidth = 1.5;
+  mfCtx.strokeRect(flX, flY, flW, flH);
+
+  mfCtx.font = '700 22px Space Mono, monospace';
+  mfCtx.fillStyle = fl.accent;
+  mfCtx.textAlign = 'center';
+  mfCtx.fillText(fl.name, w / 2, flY + 32);
+
+  if (fl.isData && fl.skills) {
+    const startY = flY + 52;
+    const rowH = 28;
+    fl.skills.forEach((skill, si) => {
+      const sy = startY + si * rowH;
+      const lvl = levelColorsMF[skill[1]] || { c: '#666', dots: 1 };
+      mfCtx.font = '700 12px IBM Plex Mono, monospace';
+      mfCtx.fillStyle = '#f0f0f0';
+      mfCtx.textAlign = 'left';
+      mfCtx.fillText(skill[0], flX + 16, sy);
+      const bx = flX + flW - 80;
+      for (let b = 0; b < 4; b++) {
+        mfCtx.fillStyle = b < lvl.dots ? lvl.c : '#2a2a2a';
+        mfCtx.fillRect(bx + b * 17, sy - 7, 14, 8);
+      }
+    });
+  }
+
+  mfFloorName.textContent = fl.name;
+  mfFloorName.style.color = fl.accent;
+}
+
+function updateMobileFloorHTML() {}
+
+document.getElementById('mfPrev')?.addEventListener('click', () => {
+  mfIndex = (mfIndex - 1 + mfFloors.length) % mfFloors.length;
+  drawMobileFloor();
+  updateMobileFloorHTML();
+});
+
+document.getElementById('mfNext')?.addEventListener('click', () => {
+  mfIndex = (mfIndex + 1) % mfFloors.length;
+  drawMobileFloor();
+  updateMobileFloorHTML();
+});
+
+resizeMF();
+updateMobileFloorHTML();
+
 // ─── WAVEFORM ────────────────────────────────────────────────────────
 const waveCanvas = document.getElementById('wave-canvas');
 const wctx = waveCanvas.getContext('2d');
@@ -771,7 +872,8 @@ function mainLoop() {
   const data = getAudioData();
   updateUI(data);
   drawHero(data);
-  drawBuildingMain(data);
+  if (window.innerWidth > 768) drawBuildingMain(data);
+  else drawMobileFloor();
   drawWaveform(data);
   drawCodeRain(data);
   animFrame = requestAnimationFrame(mainLoop);
